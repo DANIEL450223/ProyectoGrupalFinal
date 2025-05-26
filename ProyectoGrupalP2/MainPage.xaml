@@ -32,5 +32,5 @@
                 HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>
-//
+
 </ContentPage>
