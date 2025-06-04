@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+             xmlns:viewModels="clr-namespace:ProyectoGrupalP2.ViewModels"  
+             x:Class="ProyectoGrupalP2.Views.HistorialPage"  
+             Title="Historial">  
+
+    <ContentPage.BindingContext>  
+        <viewModels:HistorialViewModel />  
+    </ContentPage.BindingContext>  
+
+    <CollectionView ItemsSource="{Binding Historial}"  
+                    Margin="10">  
+        <CollectionView.ItemTemplate>  
+            <DataTemplate>  
+                <Frame BorderColor="Gray" Margin="5">  
+                    <VerticalStackLayout Padding="10" Spacing="5">  
+                        <Label Text="{Binding UsuarioId, StringFormat='Usuario ID: {0}'}"   
+                               FontAttributes="Bold" />  
+                        <Label Text="{Binding EspacioAsignado, StringFormat='Espacio: {0}'}" />  
+                        <Label Text="{Binding FechaIngreso, StringFormat='Ingreso: {0:dd/MM/yyyy HH:mm}'}" />  
+                        <Label Text="{Binding FechaSalida, StringFormat='Salida: {0:dd/MM/yyyy HH:mm}'}" />  
+                        <Label Text="{Binding TotalPagado, StringFormat='Pagó: ${0:F2}'}" />  
+                    </VerticalStackLayout>  
+                </Frame>  
+            </DataTemplate>  
+        </CollectionView.ItemTemplate>  
+    </CollectionView>  
+</ContentPage>

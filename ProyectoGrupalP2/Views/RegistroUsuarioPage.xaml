@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+    <ContentPage  
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+    xmlns:viewModels="clr-namespace:ProyectoGrupalP2.ViewsModels"  
+    x:Class="ProyectoGrupalP2.Views.RegistroUsuarioPage"  
+    Title="Registro de Usuarios">  
+
+    <ContentPage.BindingContext>  
+        <viewModels:RegistroUsuarioViewModel />  
+    </ContentPage.BindingContext>  
+
+    <ScrollView>  
+        <VerticalStackLayout Padding="20" Spacing="15">  
+            <Entry Placeholder="Cédula" Text="{Binding Cedula}" />  
+            <Entry Placeholder="Nombre" Text="{Binding Nombre}" />  
+            <Entry Placeholder="Vehículo" Text="{Binding Vehiculo}" />  
+
+            <Label Text="Fecha de Ingreso:" />  
+            <HorizontalStackLayout Spacing="10">  
+                <DatePicker Date="{Binding FechaIngreso}" />  
+                <TimePicker Time="{Binding HoraIngreso}" />  
+            </HorizontalStackLayout>  
+
+            <Label Text="Fecha de Salida:" />  
+            <HorizontalStackLayout Spacing="10">  
+                <DatePicker Date="{Binding FechaSalida}" />  
+                <TimePicker Time="{Binding HoraSalida}" />  
+            </HorizontalStackLayout>  
+
+            <Label Text="Total a pagar:" FontAttributes="Bold" />  
+            <Label Text="{Binding TotalPagar, StringFormat='${0:F2}'}" />  
+
+            <Button Text="Registrar" Command="{Binding RegistrarCommand}" />  
+
+            <Label Text="Usuarios Registrados:"  
+                   FontAttributes="Bold"  
+                   Margin="0,20,0,5" />  
+            <CollectionView ItemsSource="{Binding UsuariosRegistrados}">  
+                <CollectionView.ItemTemplate>  
+                    <DataTemplate>  
+                        <Grid Padding="5" ColumnDefinitions="Auto,*,*,*,*">  
+                            <Label Text="{Binding Id}" Grid.Column="0" />  
+                            <Label Text="{Binding Cedula}" Grid.Column="1" />   
+                            <Label Text="{Binding Nombre}" Grid.Column="2" />  
+                            <Label Text="{Binding Vehiculo}" Grid.Column="3" />  
+                            <Label Text="{Binding TotalPagar, StringFormat='${0:F2}'}" Grid.Column="4" />  
+                        </Grid>  
+                    </DataTemplate>  
+                </CollectionView.ItemTemplate>  
+            </CollectionView>  
+
+        </VerticalStackLayout>  
+    </ScrollView>  
+</ContentPage>

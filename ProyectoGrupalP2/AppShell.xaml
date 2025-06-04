@@ -3,13 +3,33 @@
     x:Class="ProyectoGrupalP2.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:ProyectoGrupalP2"
+    xmlns:views="clr-namespace:ProyectoGrupalP2.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="ProyectoGrupalP2">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <ShellContent
+            Title="Registro"
+            ContentTemplate="{DataTemplate views:RegistroUsuarioPage}"
+            Route="RegistroUsuarioPage"
+            Icon="registro_icon.png" />
 
+        <ShellContent
+            Title="Pagos"
+            ContentTemplate="{DataTemplate views:RegistroPagoPage}"
+            Route="RegistroPagoPage"
+            Icon="pagos_icon.png" />
+
+        <ShellContent
+            Title="Historial"
+            ContentTemplate="{DataTemplate views:HistorialPage}"
+            Route="HistorialPage"
+            Icon="historial_icon.png" />
+
+        <ShellContent
+            Title="Espacios"
+            ContentTemplate="{DataTemplate views:EspaciosDisponiblesPage}"
+            Route="EspaciosDisponiblesPage"
+            Icon="espacios_icon.png" />
+    </TabBar>
 </Shell>
