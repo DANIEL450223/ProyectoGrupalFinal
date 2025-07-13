@@ -10,7 +10,7 @@
         <viewModels:EspaciosDisponiblesViewModel />  
     </ContentPage.BindingContext>  
 
-    <CollectionView ItemsSource="{Binding Estacionamientos}"  
+    <CollectionView ItemsSource="{Binding Espacios}"  
                     Margin="10">  
         <CollectionView.ItemTemplate>  
             <DataTemplate>  
@@ -23,5 +23,7 @@
                 </Frame>  
             </DataTemplate>  
         </CollectionView.ItemTemplate>  
+        
     </CollectionView>  
+    
 </ContentPage>

@@ -19,9 +19,20 @@ namespace ProyectoGrupalP2.Services
             if (conn != null)
                 return;
 
-            conn = new SQLiteConnection(_dbPath);
-            conn.CreateTable<Estacionamiento>();
+            try
+            {
+                conn = new SQLiteConnection(_dbPath);
+                conn.CreateTable<Estacionamiento>();
+            }
+            catch (Exception ex)
+            {
+                //depurador captura el error
+                System.Diagnostics.Debug.WriteLine($"[SQLite ERROR]: {ex.Message}");
+                throw;
+
+            }
         }
+
 
         public void AddVehiculo(Estacionamiento est)
         {

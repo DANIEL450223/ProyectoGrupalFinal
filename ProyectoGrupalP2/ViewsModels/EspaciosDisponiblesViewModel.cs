@@ -8,34 +8,37 @@ using System.Threading.Tasks;
 
 namespace ProyectoGrupalP2.ViewModels
 {
-    public class EspaciosDisponiblesViewModel : INotifyPropertyChanged
+    public class EspaciosDisponiblesViewModel
     {
-        private readonly ApiService _apiService = new();
-
-        public ObservableCollection<Estacionamiento> Estacionamientos { get; set; } = new();
+        public ObservableCollection<Estacionamiento> Espacios { get; set; }
 
         public EspaciosDisponiblesViewModel()
         {
+            Espacios = new ObservableCollection<Estacionamiento>();
         }
 
         public async Task CargarEspaciosAsync()
         {
-            try
-            {
-                var lista = await _apiService.GetEstacionamientosAsync();
-                Estacionamientos.Clear();
-                foreach (var e in lista)
-                    Estacionamientos.Add(e);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error al cargar espacios: {ex}");
-                await Application.Current.MainPage.DisplayAlert("Error", "No se pudieron cargar los espacios.", "OK");
-            }
+            var espacios = App.VehiculoRepo.GetVehiculos();
+
+            Espacios.Clear();
+            foreach (var esp in espacios)
+                Espacios.Add(esp);
+
+            await Task.CompletedTask;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = "") =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        public void RegistrarIngreso(int numeroEspacio)
+        {
+            var espacio = new Estacionamiento
+            {
+                NumeroEspacio = numeroEspacio,
+                EstaOcupado = true,
+                UsuarioId = null
+            };
+
+            App.VehiculoRepo.AddVehiculo(espacio);
+        }
     }
+
 }
