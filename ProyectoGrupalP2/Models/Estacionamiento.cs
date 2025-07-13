@@ -1,4 +1,6 @@
-﻿namespace ProyectoGrupalP2.Models
+﻿using SQLite;
+namespace ProyectoGrupalP2.Models
+
 {
     public class Estacionamiento
     {
