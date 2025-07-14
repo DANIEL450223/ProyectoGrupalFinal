@@ -21,6 +21,27 @@ namespace ProyectoGrupalP2.Views
             base.OnAppearing();
             await _viewModel.InitAsync();
         }
+
+        // Animación al hacer clic en el botón "Pagar"
+        private async void OnPagarClicked(object sender, EventArgs e)
+        {
+            if (sender is Button boton)
+            {
+                // Rebote
+                await boton.ScaleTo(0.95, 100, Easing.CubicIn);
+                await boton.ScaleTo(1, 100, Easing.CubicOut);
+
+                // Flash de opacidad
+                await boton.FadeTo(0.7, 50);
+                await boton.FadeTo(1, 100);
+
+                // Ejecutar el Command manualmente
+                if (boton.Command?.CanExecute(boton.CommandParameter) == true)
+                {
+                    boton.Command.Execute(boton.CommandParameter);
+                }
+            }
+        }
     }
 }
 

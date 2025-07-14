@@ -11,8 +11,8 @@
     </ContentPage.BindingContext>  
 
     <ScrollView>  
-        <VerticalStackLayout Padding="20" Spacing="20" BackgroundColor="#F7F7F7">  
-            <Frame BorderColor="#A0D7EC"  
+        <VerticalStackLayout Padding="20" Spacing="20" BackgroundColor="#F7F7F7">
+            <Frame BorderColor="#00BEC7"  
                    CornerRadius="15" Padding="25"  
                    HasShadow="True" BackgroundColor="White">  
 
@@ -90,8 +90,8 @@
 
             <CollectionView ItemsSource="{Binding UsuariosRegistrados}" BackgroundColor="Transparent">  
                 <CollectionView.ItemTemplate>  
-                    <DataTemplate>  
-                        <Frame CornerRadius="10" Padding="15" Margin="0,5" BorderColor="#B0DDEE" HasShadow="True" BackgroundColor="White">  
+                    <DataTemplate>
+                        <Frame CornerRadius="10" Padding="15" Margin="0,5" BorderColor="#004346" HasShadow="True" BackgroundColor="White">  
                             <Grid ColumnDefinitions="Auto,*,*,*,*" ColumnSpacing="10" RowSpacing="5">  
                                 <Label Text="{Binding Id}" Grid.Column="0" FontAttributes="Bold" TextColor="#666666" FontSize="14" VerticalOptions="Center" />  
                                 <Label Text="{Binding Cedula}" Grid.Column="1" TextColor="#333333" FontAttributes="Bold" FontSize="15" VerticalOptions="Center" />  
