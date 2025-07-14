@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using ProyectoGrupalP2.Models;   
 using Microsoft.Maui.Storage;    
 using Microsoft.Maui.Controls;    
-using System;                     
+using System;
+using CommunityToolkit.Maui.Storage; // Para FileSaver y FileResult
 
 // **Para exportar a PDF (necesita instalar el paquete NuGet QuestPDF)**
 // Install-Package QuestPDF
@@ -88,7 +89,7 @@ namespace ProyectoGrupalP2.Services
 #if ANDROID || IOS || MACCATALYST || WINDOWS
                 var fileResult = new FileResult(filePath);
                 // SaveAsync toma un stream, por eso se usa OpenReadAsync() del FileResult
-                await FileSaver.Default.SaveAsync(fileName, fileResult.OpenReadAsync());
+                await FileSaver.Default.SaveAsync(fileName, await fileResult.OpenReadAsync());
 
                 await _alertaService.MostrarAsync("Éxito", $"Historial exportado y guardado como: {fileName}", "OK");
 #else
@@ -138,7 +139,7 @@ namespace ProyectoGrupalP2.Services
                     {
                         page.Size(PageSizes.A4);           // Tamaño de página A4
                         page.Margin(2, Unit.Centimetre);   // Márgenes de 2 cm
-                        page.PageColor(Colors.White);      // Color de fondo de la página
+                        page.PageColor(QuestPDF.Helpers.Colors.White);      // Color de fondo de la página
                         page.DefaultTextStyle(x => x.FontSize(10)); // Estilo de texto por defecto
 
                         // Encabezado del documento
@@ -195,14 +196,14 @@ namespace ProyectoGrupalP2.Services
                             });
 
                         // Pie de página
-                        page.Footer()
-                            .Text(x =>
-                            {
-                                x.Span("Página ").FontSize(9);
-                                x.CurrentPageNumber().FontSize(9); // Número de página actual
-                                x.Span(" de ").FontSize(9);
-                                x.TotalPages().FontSize(9);       // Total de páginas
-                            }).AlignCenter(); // Centrado
+                        page.Footer().AlignCenter().Text(text =>
+                        {
+                            text.Span("Página ").FontSize(9);
+                            text.CurrentPageNumber().FontSize(9);
+                            text.Span(" de ").FontSize(9);
+                            text.TotalPages().FontSize(9);
+                        });
+
                     });
                 })
                 .GeneratePdf(filePath); // Genera el PDF y lo guarda en la ruta temporal
@@ -210,7 +211,7 @@ namespace ProyectoGrupalP2.Services
                 // Permite al usuario guardar el archivo generado
 #if ANDROID || IOS || MACCATALYST || WINDOWS
                 var fileResult = new FileResult(filePath);
-                await FileSaver.Default.SaveAsync(fileName, fileResult.OpenReadAsync());
+                await FileSaver.Default.SaveAsync(fileName, await fileResult.OpenReadAsync());
 
                 await _alertaService.MostrarAsync("Éxito", $"Historial exportado y guardado como: {fileName}", "OK");
 #else

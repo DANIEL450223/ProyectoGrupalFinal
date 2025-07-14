@@ -4,7 +4,8 @@ using ProyectoGrupalP2.ViewModels; // Asegúrate de incluir esto
 using ProyectoGrupalP2.Views;
 using CommunityToolkit.Maui; // <--- ¡IMPORTANTE! Añade esta línea para usar el Community Toolkit
 using System.IO;              // Para Path.Combine y FileSystem
-using Microsoft.Maui.Storage; // Para FileSystem
+using Microsoft.Maui.Storage;
+using ProyectoGrupalP2.ViewsModels; // Para FileSystem
 
 namespace ProyectoGrupalP2
 {
