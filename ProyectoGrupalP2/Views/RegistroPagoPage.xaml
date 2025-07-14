@@ -2,13 +2,9 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:viewModels="clr-namespace:ProyectoGrupalP2.ViewsModels"
+    xmlns:viewModels="clr-namespace:ProyectoGrupalP2.ViewModels"
     x:Class="ProyectoGrupalP2.Views.RegistroPagoPage"
     Title="Pagos Pendientes">
-
-    <ContentPage.BindingContext>
-        <viewModels:RegistroPagoViewsModel />
-    </ContentPage.BindingContext>
 
     <CollectionView ItemsSource="{Binding UsuariosPorPagar}" Margin="10">
         <CollectionView.ItemTemplate>
@@ -30,9 +26,10 @@
                            Grid.Row="0" Grid.Column="1"
                            VerticalOptions="Center" />
                     <Button Text="Pagar"
-                            Grid.Row="0" Grid.Column="2"
-                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:RegistroPagoViewsModel}}, Path=ConfirmarPagoCommand}"
-                            CommandParameter="{Binding .}" />
+        Grid.Row="0" Grid.Column="2"
+        Command="{Binding ConfirmarPagoCommand}"
+        CommandParameter="{Binding .}" />
+
                     <Label Text="{Binding TotalPagar, StringFormat='Monto: ${0:F2}'}"
                            Grid.Row="1"
                            Grid.Column="0"

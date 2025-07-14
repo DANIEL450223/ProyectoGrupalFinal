@@ -1,99 +1,117 @@
 ﻿using ProyectoGrupalP2.Models;
 using ProyectoGrupalP2.Services;
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Microsoft.Maui.Controls;
 
-namespace ProyectoGrupalP2.ViewsModels
+namespace ProyectoGrupalP2.ViewModels
 {
-    public partial class RegistroPagoViewsModel : INotifyPropertyChanged
+    public class RegistroPagoViewModel : INotifyPropertyChanged
     {
-        private readonly ApiService _apiService = new();
+        private readonly ApiService _apiService;
+        private readonly IAlertaService _alertaService;
 
-        public ObservableCollection<Usuario> UsuariosPorPagar { get; set; } = new();
-
+        public ObservableCollection<Usuario> UsuariosPorPagar { get; } = new();
         public ICommand ConfirmarPagoCommand { get; }
 
-        public RegistroPagoViewsModel()
+        public RegistroPagoViewModel(IAlertaService alertaService, ApiService apiService = null)
         {
+            _alertaService = alertaService;
+            _apiService = apiService ?? new ApiService();
             ConfirmarPagoCommand = new Command<Usuario>(async (u) => await EjecutarPagoAsync(u));
-            Task.Run(async () => await CargarUsuariosPendientesAsync());
         }
 
-        public async Task CargarUsuariosPendientesAsync()
+        public async Task InitAsync()
+        {
+            await CargarUsuariosPendientesAsync();
+        }
+
+        private async Task CargarUsuariosPendientesAsync()
         {
             try
             {
                 var lista = await _apiService.GetUsuariosAsync();
                 UsuariosPorPagar.Clear();
                 foreach (var u in lista)
+                {
                     UsuariosPorPagar.Add(u);
+                }
+
+                if (UsuariosPorPagar.Count == 0)
+                {
+                    await _alertaService.MostrarAsync("Advertencia", "No se encontraron usuarios pendientes.", "OK");
+                }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error al cargar usuarios pendientes: {ex}");
-                await Application.Current.MainPage.DisplayAlert("Error", "No se pudieron cargar los usuarios pendientes.", "OK");
+                await _alertaService.MostrarAsync("Error", $"Error al cargar usuarios: {ex.Message}", "OK");
             }
         }
 
         private async Task EjecutarPagoAsync(Usuario usuario)
         {
             if (usuario == null)
+            {
+                await _alertaService.MostrarAsync("Error", "Usuario no válido.", "OK");
                 return;
+            }
 
             try
             {
                 var listaEspacios = await _apiService.GetEstacionamientosAsync();
                 var miEspacio = listaEspacios.FirstOrDefault(e => e.UsuarioId == usuario.Id);
 
-                var nuevoHistorial = new Historial
+                if (miEspacio == null)
+                {
+                    await _alertaService.MostrarAsync("Error", "No se encontró un espacio para el usuario.", "OK");
+                    return;
+                }
+
+                var historial = new Historial
                 {
                     UsuarioId = usuario.Id,
-                    EspacioAsignado = miEspacio?.NumeroEspacio ?? 0,
+                    EspacioAsignado = miEspacio.NumeroEspacio,
                     FechaIngreso = usuario.FechaIngreso,
                     FechaSalida = usuario.FechaSalida,
                     TotalPagado = usuario.TotalPagar
                 };
-                var exitoHist = await _apiService.PostHistorialAsync(nuevoHistorial);
-                if (!exitoHist)
+
+                var exitoHistorial = await _apiService.PostHistorialAsync(historial);
+                if (!exitoHistorial)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", "No se pudo guardar en historial.", "OK");
+                    await _alertaService.MostrarAsync("Error", "No se pudo registrar el historial de pago.", "OK");
                     return;
                 }
 
-                var exitoDelete = await _apiService.DeleteUsuarioAsync(usuario.Id);
-                if (!exitoDelete)
+                var exitoEliminarUsuario = await _apiService.DeleteUsuarioAsync(usuario.Id);
+                if (!exitoEliminarUsuario)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", "No se pudo eliminar el usuario.", "OK");
+                    await _alertaService.MostrarAsync("Error", "No se pudo eliminar el usuario.", "OK");
                     return;
                 }
 
-                if (miEspacio != null)
-                {
-                    miEspacio.EstaOcupado = false;
-                    miEspacio.UsuarioId = null;
-                    await _apiService.UpdateEstacionamientoAsync(miEspacio);
-                }
+                miEspacio.EstaOcupado = false;
+                miEspacio.UsuarioId = null;
+                await _apiService.UpdateEstacionamientoAsync(miEspacio);
 
                 UsuariosPorPagar.Remove(usuario);
 
-                await Application.Current.MainPage.DisplayAlert("Éxito", "Pago registrado correctamente.", "OK");
+                await _alertaService.MostrarAsync("Éxito", "Pago registrado correctamente.", "OK");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error en EjecutarPagoAsync: {ex}");
-                await Application.Current.MainPage.DisplayAlert("Error", "Ocurrió un problema al procesar el pago.", "OK");
+                await _alertaService.MostrarAsync("Error", $"Error al procesar el pago: {ex.Message}", "OK");
             }
         }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = "") =>
+
+        protected void OnPropertyChanged([CallerMemberName] string name = "")
+        {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 }

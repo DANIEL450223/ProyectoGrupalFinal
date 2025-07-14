@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using ProyectoGrupalP2.Services;
+using ProyectoGrupalP2.ViewModels;  // Asegúrate de incluir esto
+using ProyectoGrupalP2.Views;
 
 namespace ProyectoGrupalP2
 {
@@ -16,8 +19,13 @@ namespace ProyectoGrupalP2
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
+
+            //  Registrar los servicios
+            builder.Services.AddSingleton<IAlertaService, AlertService>();
+            builder.Services.AddSingleton<RegistroPagoViewModel>();
+            builder.Services.AddSingleton<RegistroPagoPage>(); 
 
             return builder.Build();
         }
