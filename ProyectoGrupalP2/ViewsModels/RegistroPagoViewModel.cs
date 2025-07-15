@@ -14,6 +14,7 @@ namespace ProyectoGrupalP2.ViewModels
         private readonly ApiService _apiService;
         private readonly IAlertaService _alertaService;
 
+
         public ObservableCollection<Usuario> UsuariosPorPagar { get; } = new();
         public ICommand ConfirmarPagoCommand { get; }
 
@@ -76,15 +77,20 @@ namespace ProyectoGrupalP2.ViewModels
                     EspacioAsignado = miEspacio.NumeroEspacio.ToString(),
                     FechaIngreso = usuario.FechaIngreso,
                     FechaSalida = usuario.FechaSalida,
-                    TotalPagado = usuario.TotalPagar
+                    TotalPagado = usuario.TotalPagar,
+                    Nombre = usuario.Nombre,
+                    Vehiculo = usuario.Vehiculo
                 };
 
                 var exitoHistorial = await _apiService.PostHistorialAsync(historial);
                 if (!exitoHistorial)
                 {
-                    await _alertaService.MostrarAsync("Error", "No se pudo registrar el historial de pago.", "OK");
+                    await _alertaService.MostrarAsync("Error", "No se pudo registrar el historial de pago en la API.", "OK");
                     return;
                 }
+
+                // ✅ Guardar en SQLite local
+                App.HistorialRepo.AddHistorial(historial);
 
                 var exitoEliminarUsuario = await _apiService.DeleteUsuarioAsync(usuario.Id);
                 if (!exitoEliminarUsuario)
@@ -94,7 +100,7 @@ namespace ProyectoGrupalP2.ViewModels
                 }
 
                 miEspacio.EstaOcupado = false;
-                miEspacio.UsuarioId = null;
+                miEspacio.UsuarioId = null;     
                 await _apiService.UpdateEstacionamientoAsync(miEspacio);
 
                 UsuariosPorPagar.Remove(usuario);

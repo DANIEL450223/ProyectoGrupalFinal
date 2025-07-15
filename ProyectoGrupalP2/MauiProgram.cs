@@ -31,7 +31,7 @@ namespace ProyectoGrupalP2
             // --- Configuración de la Base de Datos Local (SQLite) ---
             // Calcula la ruta donde se guardará el archivo de la base de datos SQLite.
             // FileSystem.AppDataDirectory es una ubicación segura y específica de la aplicación.
-            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "estacionamiento.db3");
+            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "vehiculos.db");
             // Registra VehiculoRepository como un Singleton. Esto significa que se crea una única instancia
             // y se reutiliza en toda la aplicación. Se usa ActivatorUtilities.CreateInstance para pasar
             // el parámetro 'dbPath' al constructor.

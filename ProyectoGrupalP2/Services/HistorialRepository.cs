@@ -1,28 +1,27 @@
-﻿using ProyectoGrupalP2.Models;
-using SQLite;
+﻿using SQLite;
+using ProyectoGrupalP2.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ProyectoGrupalP2.Services
 {
     public class HistorialRepository
     {
-        private readonly SQLiteConnection _connection;
+        private SQLiteConnection conn;
 
         public HistorialRepository(string dbPath)
         {
-            _connection = new SQLiteConnection(dbPath);
-            _connection.CreateTable<Historial>(); //Crear tabla
+            conn = new SQLiteConnection(dbPath);
+            conn.CreateTable<Historial>();
         }
 
-        public List<Historial> ObtenerHistorial()
+        public void AddHistorial(Historial historial)
         {
-            return _connection.Table<Historial>().ToList(); //Leer datos
+            conn.Insert(historial);
         }
 
-        public void AgregarHistorial(Historial historial)
+        public List<Historial> GetHistoriales()
         {
-            _connection.Insert(historial); // Guardar registro
+            return conn.Table<Historial>().ToList();
         }
     }
 }

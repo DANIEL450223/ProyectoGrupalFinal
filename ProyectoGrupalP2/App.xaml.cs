@@ -12,6 +12,7 @@ namespace ProyectoGrupalP2
         public App()
         {
             InitializeComponent();
+            MainPage = new AppShell();
 
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "vehiculos.db");
             VehiculoRepo = new VehiculoRepository(dbPath);
@@ -22,7 +23,7 @@ namespace ProyectoGrupalP2
             services.AddSingleton<IAlertaService, AlertService>();  // Asegúrate de que la interfaz y la clase estén bien registradas
             services.AddSingleton<ExportService>();  // Agrega ExportService si usas inyección de dependencias
 
-            MainPage = new AppShell();
+            
         }
     }
 }

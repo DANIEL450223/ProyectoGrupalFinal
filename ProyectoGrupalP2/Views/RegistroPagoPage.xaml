@@ -41,16 +41,7 @@
                            TextColor="#666" />
 
                         <!-- Botón de pagar con animación -->
-                        <Button Text="Pagar"
-                            Grid.Row="0" Grid.Column="2"
-                            Command="{Binding ConfirmarPagoCommand}"
-                            CommandParameter="{Binding .}"
-                            BackgroundColor="#4CAF50"
-                            TextColor="White"
-                            CornerRadius="8"
-                            Padding="10,5"
-                            FontAttributes="Bold"
-                            Clicked="OnPagarClicked" />
+                        <Button Text="Pagar" Grid.Row="0" Grid.Column="2" Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ConfirmarPagoCommand}" CommandParameter="{Binding .}" BackgroundColor="#4CAF50" TextColor="White" CornerRadius="8" Padding="10,5" FontAttributes="Bold" Clicked="OnPagarClicked" />
 
 
                         <!-- Total a pagar -->

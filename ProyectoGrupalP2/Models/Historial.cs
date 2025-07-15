@@ -5,6 +5,7 @@ namespace ProyectoGrupalP2.Models
 {
     public class Historial
     {
+        [PrimaryKey, AutoIncrement] // 👈 Necesario para que SQLite funcione bien
         public int UsuarioId { get; set; }
         public string EspacioAsignado { get; set; }
         public DateTime FechaIngreso { get; set; }
@@ -13,5 +14,6 @@ namespace ProyectoGrupalP2.Models
         public string Nombre { get; set; }
         public string Vehiculo { get; set; }
     }
+
 
 }

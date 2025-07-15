@@ -3,6 +3,7 @@ using ProyectoGrupalP2.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -77,6 +78,16 @@ namespace ProyectoGrupalP2.ViewsModels
                     await _apiService.UpdateEstacionamientoAsync(libre);
                 }
 
+                var historial = new Historial
+                {
+                    UsuarioId = creado.Id,
+                    Nombre = creado.Nombre,
+                    Vehiculo = creado.Vehiculo,
+                    EspacioAsignado = libre?.NumeroEspacio.ToString(), // Conversión segura
+                    FechaIngreso = creado.FechaIngreso,
+                    FechaSalida = creado.FechaSalida,
+                    TotalPagado = creado.TotalPagar
+                };
                 await CargarUsuariosAsync();
 
                 Cedula = string.Empty;
@@ -100,7 +111,6 @@ namespace ProyectoGrupalP2.ViewsModels
                 await Application.Current.MainPage.DisplayAlert("Error", "Ocurrió un problema al registrar.", "OK");
             }
         }
-
 
         private async Task AsignarEspacioAsync(Usuario usuario)
         {
