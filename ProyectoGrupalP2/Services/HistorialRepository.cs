@@ -10,7 +10,8 @@ namespace ProyectoGrupalP2.Services
 
         public HistorialRepository(string dbPath)
         {
-            conn = new SQLiteConnection(dbPath);
+            var options = new SQLiteConnectionString(dbPath, storeDateTimeAsTicks: false); // aquí cambia
+            conn = new SQLiteConnection(options);
             conn.CreateTable<Historial>();
         }
 
@@ -24,4 +25,5 @@ namespace ProyectoGrupalP2.Services
             return conn.Table<Historial>().ToList();
         }
     }
+
 }

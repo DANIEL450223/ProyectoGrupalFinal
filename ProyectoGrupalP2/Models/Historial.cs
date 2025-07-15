@@ -5,8 +5,11 @@ namespace ProyectoGrupalP2.Models
 {
     public class Historial
     {
-        [PrimaryKey, AutoIncrement] // 👈 Necesario para que SQLite funcione bien
+        
+        [PrimaryKey, AutoIncrement] //  Necesario para que SQLite funcione bien
+        public int Id { get; set; }
         public int UsuarioId { get; set; }
+
         public string EspacioAsignado { get; set; }
         public DateTime FechaIngreso { get; set; }
         public DateTime FechaSalida { get; set; }
