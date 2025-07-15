@@ -1,31 +1,28 @@
-
-using Microsoft.Maui.Controls;
 using ProyectoGrupalP2.ViewModels;
-using ProyectoGrupalP2.ViewsModels;
+using ProyectoGrupalP2.Services;
 
 namespace ProyectoGrupalP2.Views
 {
     public partial class HistorialPage : ContentPage
     {
-        private readonly HistorialViewModel _vm;
+        private HistorialViewModel _viewModel;
 
-        public HistorialPage(HistorialViewModel viewModel)
+        public HistorialPage()
         {
             InitializeComponent();
-            _vm = viewModel;   // Asigna la instancia del ViewModel que fue inyectada.
-            BindingContext = _vm;  // Establece el contexto de datos de la página al ViewModel.
-                                   // Esto permite que los elementos de la UI (como los botones y la CollectionView)
+
+            // Instanciar el servicio de alertas
+            var alertaService = new AlertService(); // Si usas inyección de dependencias, usa DependencyService.Get<IAlertaService>() para obtenerlo.
+
+            // Ahora pasa el alertaService a ExportService
+            _viewModel = new HistorialViewModel(new ExportService(alertaService)); // Pasar el alertaService al ExportService
+            BindingContext = _viewModel;
         }
 
-        // Método que se llama automáticamente cuando la página está a punto de aparecer en pantalla.
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
-            base.OnAppearing();// Llama a la implementación base del método.
-
-            // Inicia la carga asíncrona del historial en el ViewModel.
-            // El '_' (discard operator) indica que no necesitamos manejar directamente el Task que devuelve,
-            // pero la operación asíncrona se ejecutará.
-            _ = _vm.CargarHistorialAsync();
+            base.OnAppearing();
+            await _viewModel.CargarHistorialAsync();
         }
     }
 }

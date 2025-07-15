@@ -73,7 +73,7 @@ namespace ProyectoGrupalP2.ViewModels
                 var historial = new Historial
                 {
                     UsuarioId = usuario.Id,
-                    EspacioAsignado = miEspacio.NumeroEspacio,
+                    EspacioAsignado = miEspacio.NumeroEspacio.ToString(),
                     FechaIngreso = usuario.FechaIngreso,
                     FechaSalida = usuario.FechaSalida,
                     TotalPagado = usuario.TotalPagar
